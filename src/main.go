@@ -1,45 +1,14 @@
 package main
 
-import "fmt"
-
-type Vehicle interface {
-	Accelerate()
-	Brake()
-}
-
-type Car struct {
-	color string
-}
-
-func (c Car) Accelerate() {
-	fmt.Println("車が加速する")
-}
-
-func (c Car) Brake() {
-	fmt.Println("車がブレーキをかける")
-}
-
-type Bike struct {
-	color string
-}
-
-func (c Bike) Accelerate() {
-	fmt.Println("バイクが加速する")
-}
-
-func (c Bike) Brake() {
-	fmt.Println("バイクがブレーキをかける")
-}
-
-func drive(vehicle Vehicle) {
-	vehicle.Accelerate()
-	vehicle.Brake()
-}
+import (
+	"fmt"
+	"github.com/markcheno/go-quote"
+	"github.com/markcheno/go-talib"
+)
 
 func main() {
-	car := Car{color: "red"}
-	drive(car)
-
-	bike := Bike{color: "blue"}
-	drive(bike)
+	spy, _ := quote.NewQuoteFromYahoo("spy", "2016-01-01", "2016-04-01", quote.Daily, true)
+	fmt.Print(spy.CSV())
+	rsi2 := talib.Rsi(spy.Close, 2)
+	fmt.Println(rsi2)
 }
