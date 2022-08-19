@@ -2,19 +2,14 @@ package main
 
 import "fmt"
 
-type User struct {
-	name  string
-	age   int
-	email string
-}
-
-func NewPost() *User {
-	u := new(User)
-	u.name = "taro"
-	u.age = 39
-	return u
-}
 func main() {
-	user := NewPost()
-	fmt.Println(user)
+	pow := make([]int, 10)
+	for i := range pow {
+		pow[i] = 1 << uint(i) // == 2**i
+	}
+	
+	fmt.Println(pow)
+	for _, value := range pow {
+		fmt.Printf("%d\n", value)
+	}
 }
