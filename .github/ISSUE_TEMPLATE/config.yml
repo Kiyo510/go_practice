@@ -2,4 +2,5 @@ blank_issues_enabled: true
 contact_links:
   - name: Issue
     about: Issue template
-    url: https:/Kiyo510/go_practice/github.com/issues/new?template=projects_test.md&projects=Kiyo510/go_practice/1
+    url: https://github.com/Kiyo510/go_practice/issues/new?assignees=&labels=bug&template=projects_test.md&title=%5B%E3%83%90%E3%82%B0%5D&projects=Kiyo510/1
+
