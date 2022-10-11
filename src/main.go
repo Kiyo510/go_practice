@@ -1,37 +1,33 @@
 package main
 
-import (
-	"fmt"
-	"os"
-)
-
-func TestDefer() {
-	defer fmt.Println("END")
-	fmt.Println("START")
-}
-
-func RunDefer() {
-	defer fmt.Println(1)
-	defer fmt.Println(2)
-	defer fmt.Println(3)
-}
+import "fmt"
 
 func main() {
-	TestDefer()
+	//var ch1 chan int
 
-	RunDefer()
+	//受信専用
+	//var ch2 <-chan int
 
-	file, err := os.Create("test.txt")
-	if err != nil {
-		fmt.Println(err)
-	}
-	
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			fmt.Println(err)
-		}
-	}(file)
+	//送信専用
+	//var ch3 chan<- int
 
-	file.Write([]byte("Hello"))
+	//ch1 = make(chan int)
+	//ch2 := make(chan int)
+
+	ch3 := make(chan int, 4)
+	fmt.Println(cap(ch3))
+
+	ch3 <- 1
+	fmt.Println(len(ch3))
+
+	ch3 <- 55
+	fmt.Println(len(ch3))
+
+	i := <-ch3
+	fmt.Println(i)
+
+	i2 := <-ch3
+	fmt.Println(i2)
+
+	fmt.Println(<-ch3)
 }
