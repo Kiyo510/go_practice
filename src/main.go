@@ -1,18 +1,37 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
-func integers() func() int {
-	i := 0
-	return func() int {
-		i++
-		return i
-	}
+func TestDefer() {
+	defer fmt.Println("END")
+	fmt.Println("START")
 }
+
+func RunDefer() {
+	defer fmt.Println(1)
+	defer fmt.Println(2)
+	defer fmt.Println(3)
+}
+
 func main() {
-	map1 := map[string]int{"apple": 100, "banana": 200}
-	fmt.Println(map1, map1["apple"])
-	for v, k := range map1 {
-		fmt.Println(v, k)
+	TestDefer()
+
+	RunDefer()
+
+	file, err := os.Create("test.txt")
+	if err != nil {
+		fmt.Println(err)
 	}
+	
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}(file)
+
+	file.Write([]byte("Hello"))
 }
