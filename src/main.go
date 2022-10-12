@@ -1,29 +1,49 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
-
-func receiver(c chan int) {
-	for {
-		i := <-c
-		fmt.Println(i)
-	}
-}
+import "fmt"
 
 func main() {
-	ch1 := make(chan int)
-	ch2 := make(chan int)
+	ch1 := make(chan int, 2)
+	ch2 := make(chan string, 2)
 
-	go receiver(ch1)
-	go receiver(ch2)
+	ch2 <- "hello"
 
-	i := 0
-	for i < 100 {
-		ch1 <- i
-		ch2 <- i
-		time.Sleep(50 * time.Millisecond)
-		i++
+	select {
+	case v1 := <-ch1:
+		fmt.Println(v1)
+	case v2 := <-ch2:
+		fmt.Println(v2 + "!?")
+	}
+
+	ch3 := make(chan int)
+	ch4 := make(chan int)
+	ch5 := make(chan int)
+
+	// reciever
+	go func() {
+		for {
+			i := <-ch3
+			ch4 <- i * 2
+		}
+	}()
+
+	go func() {
+		for {
+			i2 := <-ch4
+			ch5 <- i2 - 1
+		}
+	}()
+
+	n := 0
+	for {
+		select {
+		case ch3 <- n:
+			n++
+		case i3 := <-ch5:
+			fmt.Println("recieved", i3)
+		}
+		if n > 100 {
+			break
+		}
 	}
 }
