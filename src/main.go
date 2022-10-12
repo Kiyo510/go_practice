@@ -2,48 +2,30 @@ package main
 
 import "fmt"
 
+type User struct {
+	Name string
+	Age  int
+	//X,Y int
+}
+
+func NewUser(name string, age int) *User {
+	return &User{Name: name, Age: age}
+}
+
+func (u User) SayName() {
+	fmt.Println(u.Name)
+}
+
+func (u *User) SetName(name string) {
+	u.Name = name
+}
 func main() {
-	ch1 := make(chan int, 2)
-	ch2 := make(chan string, 2)
+	user1 := User{Name: "user1"}
+	user1.SayName()
 
-	ch2 <- "hello"
+	user1.SetName("hogetarou")
+	fmt.Println(user1)
 
-	select {
-	case v1 := <-ch1:
-		fmt.Println(v1)
-	case v2 := <-ch2:
-		fmt.Println(v2 + "!?")
-	}
-
-	ch3 := make(chan int)
-	ch4 := make(chan int)
-	ch5 := make(chan int)
-
-	// reciever
-	go func() {
-		for {
-			i := <-ch3
-			ch4 <- i * 2
-		}
-	}()
-
-	go func() {
-		for {
-			i2 := <-ch4
-			ch5 <- i2 - 1
-		}
-	}()
-
-	n := 0
-	for {
-		select {
-		case ch3 <- n:
-			n++
-		case i3 := <-ch5:
-			fmt.Println("recieved", i3)
-		}
-		if n > 100 {
-			break
-		}
-	}
+	user2 := NewUser("mike", 100)
+	fmt.Println(user2)
 }
