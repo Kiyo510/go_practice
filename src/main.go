@@ -2,30 +2,17 @@ package main
 
 import "fmt"
 
-type User struct {
-	Name string
-	Age  int
-	//X,Y int
+type MyInt int
+
+func (m MyInt) MyIntFunc(hoge string, huga int) int {
+	fmt.Println("111111")
+	return 1111
 }
 
-func NewUser(name string, age int) *User {
-	return &User{Name: name, Age: age}
-}
-
-func (u User) SayName() {
-	fmt.Println(u.Name)
-}
-
-func (u *User) SetName(name string) {
-	u.Name = name
-}
 func main() {
-	user1 := User{Name: "user1"}
-	user1.SayName()
+	var myint MyInt
+	myint = 2
+	fmt.Printf("%T\n", myint)
 
-	user1.SetName("hogetarou")
-	fmt.Println(user1)
-
-	user2 := NewUser("mike", 100)
-	fmt.Println(user2)
+	myint.MyIntFunc("hoge", 11)
 }
