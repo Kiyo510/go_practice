@@ -1,41 +1,42 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"sort"
+	"time"
 )
 
-type Entry struct {
-	Name  string
-	Value int
-}
-
-type List []Entry
-
-func (l List) Len() int {
-	return len(l)
-}
-
-func (l List) Swap(i, j int) {
-	l[i], l[j] = l[j], l[i]
-}
-
-func (l List) Less(i, j int) bool {
-	if l[i].Value == l[j].Value {
-		return l[i].Name < l[j].Name
-	} else {
-		return l[i].Value < l[j].Value
-	}
-}
-
 func main() {
-	m := map[string]int{"S": 1, "A": 3, "I": 3, "K": 9, "O": 8}
+	ch := make(chan string)
 
-	lt := List{}
-	for k, v := range m {
-		e := Entry{k, v}
-		lt = append(lt, e)
+	ctx := context.Background()
+
+	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+
+	defer cancel()
+
+	go longProcess(ctx, ch)
+
+L:
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("########################ERROR################")
+			fmt.Println(ctx.Err())
+			break L
+		case s := <-ch:
+			fmt.Println(s)
+			fmt.Println("success")
+			break L
+		}
 	}
-	sort.Sort(lt)
-	fmt.Println(lt)
+
+	fmt.Println("ループ抜けた")
+}
+
+func longProcess(ctx context.Context, ch chan string) {
+	fmt.Println("開始")
+	time.Sleep(2 * time.Second)
+	fmt.Println("終了")
+	ch <- "実行結果"
 }
