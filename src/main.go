@@ -2,17 +2,35 @@ package main
 
 import "fmt"
 
-type MyInt int
+type Stringify interface {
+	ToString() string
+}
 
-func (m MyInt) MyIntFunc(hoge string, huga int) int {
-	fmt.Println("111111")
-	return 1111
+type Person struct {
+	Name string
+	Age  int
+}
+
+func (p *Person) ToString() string {
+	return fmt.Sprintf("Name=%v, Age=%v", p.Name, p.Age)
+}
+
+type Car struct {
+	Number string
+	Model  string
+}
+
+func (c *Car) ToString() string {
+	return fmt.Sprintf("Name=%v, Age=%v", c.Number, c.Model)
 }
 
 func main() {
-	var myint MyInt
-	myint = 2
-	fmt.Printf("%T\n", myint)
+	vs := []Stringify{
+		&Person{Name: "Taro", Age: 21},
+		&Car{Number: "123-456", Model: "AB-1244"},
+	}
 
-	myint.MyIntFunc("hoge", 11)
+	for _, v := range vs {
+		fmt.Println(v.ToString())
+	}
 }
