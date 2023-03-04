@@ -2,35 +2,14 @@ package main
 
 import "fmt"
 
-type Stringify interface {
-	ToString() string
-}
-
-type Person struct {
-	Name string
-	Age  int
-}
-
-func (p *Person) ToString() string {
-	return fmt.Sprintf("Name=%v, Age=%v", p.Name, p.Age)
-}
-
-type Car struct {
-	Number string
-	Model  string
-}
-
-func (c *Car) ToString() string {
-	return fmt.Sprintf("Name=%v, Age=%v", c.Number, c.Model)
-}
-
 func main() {
-	vs := []Stringify{
-		&Person{Name: "Taro", Age: 21},
-		&Car{Number: "123-456", Model: "AB-1244"},
-	}
+	sl3 := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	fmt.Println(sl3)
 
-	for _, v := range vs {
-		fmt.Println(v.ToString())
-	}
+	sl3 = append(sl3, 300)
+	fmt.Println(sl3)
+
+	sl2 := make([]int, 10)
+	fmt.Println(sl2)
+
 }
