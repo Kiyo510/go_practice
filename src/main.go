@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"go-practice/app/models"
 	"log"
 )
@@ -33,15 +34,30 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	t := models.Todo{
-		CONTENT: "todo test",
-		UserID:  user.ID,
-	}
+	//err = user.CreateTodo("test content")
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
 
-	err = t.CreateTodo()
+	t, err := models.GetTodo(5)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(t)
+
+	t.CONTENT = "updated!!!!"
+	err = t.UpdateTodo()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	t, err = t.GetTodo(1)
+	todos, err := models.GetTodos()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(todos)
+
+	//todos, _ = user.GetTodoByUser()
+	//fmt.Println(todos)
+
 }
