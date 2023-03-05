@@ -1,42 +1,24 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"time"
+	"html/template"
+	"log"
+	"net/http"
 )
 
-func main() {
-	ch := make(chan string)
-
-	ctx := context.Background()
-
-	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
-
-	defer cancel()
-
-	go longProcess(ctx, ch)
-
-L:
-	for {
-		select {
-		case <-ctx.Done():
-			fmt.Println("########################ERROR################")
-			fmt.Println(ctx.Err())
-			break L
-		case s := <-ch:
-			fmt.Println(s)
-			fmt.Println("success")
-			break L
-		}
+func top(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("tmpl.html")
+	if err != nil {
+		log.Println(err)
 	}
 
-	fmt.Println("ループ抜けた")
+	err = t.Execute(w, "Hello World111!")
+	if err != nil {
+		log.Println(err)
+	}
 }
 
-func longProcess(ctx context.Context, ch chan string) {
-	fmt.Println("開始")
-	time.Sleep(2 * time.Second)
-	fmt.Println("終了")
-	ch <- "実行結果"
+func main() {
+	http.HandleFunc("/top", top)
+	http.ListenAndServe(":8080", nil)
 }
