@@ -58,10 +58,6 @@ func GetUserByEmail(email string) (user User, err error) {
 	cmd := `select * from users where email = ?`
 	err = Db.QueryRow(cmd, email).Scan(&user.ID, &user.UUID, &user.Name, &user.Email, &user.Password, &user.CreatedAt)
 
-	if err != nil {
-		log.Fatalln(err)
-	}
-
 	return user, err
 }
 
@@ -81,6 +77,13 @@ func (u *User) CreateSession() (session Session, err error) {
 	}
 
 	return session, err
+}
+
+func (s Session) DeleteSessionByUUID() (err error) {
+	cmd := `delete from sessions where uuid = ?`
+	_, err = Db.Exec(cmd, s.UUID)
+
+	return err
 }
 
 func (s Session) CheckSession() (valid bool, err error) {
