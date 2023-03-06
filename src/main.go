@@ -7,57 +7,26 @@ import (
 )
 
 func main() {
-	//fmt.Println(u)
-	//
-	//err := u.CreateUser()
+	//err := controllers.StartMainServer()
 	//if err != nil {
 	//	log.Fatalln(err)
 	//}
 
-	//user, err := u.GetUser(1)
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//fmt.Println(user)
-	//
-	//user.Name = "test3"
-	//user.Email = "test3@example.com"
-	//err = user.UpdateUser()
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//
-	var user models.User
-	var err error
-	user, err = user.GetUser(1)
+	user, err := models.GetUserByEmail("test3@example.com")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	//err = user.CreateTodo("test content")
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-
-	t, err := models.GetTodo(5)
+	var session models.Session
+	session, err = user.CreateSession()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
-	fmt.Println(t)
+	fmt.Println(session)
 
-	t.CONTENT = "updated!!!!"
-	err = t.UpdateTodo()
+	result, err := session.CheckSession()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
-
-	todos, err := models.GetTodos()
-	if err != nil {
-		log.Fatalln(err)
-	}
-	fmt.Println(todos)
-
-	//todos, _ = user.GetTodoByUser()
-	//fmt.Println(todos)
-
+	fmt.Println(result)
 }

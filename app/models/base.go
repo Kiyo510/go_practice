@@ -15,8 +15,9 @@ var Db *sql.DB
 var err error
 
 const (
-	tableNameUser = "users"
-	tableNameTodo = "todos"
+	tableNameUser    = "users"
+	tableNameTodo    = "todos"
+	tableNameSession = "sessions"
 )
 
 func init() {
@@ -47,6 +48,19 @@ func init() {
     PRIMARY KEY (id))`, tableNameTodo)
 
 	_, err = Db.Exec(cmdT)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	cmdS := fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s(
+    id INT(11) AUTO_INCREMENT NOT NULL,
+    uuid VARCHAR(255) NOT NULL ,
+    email VARCHAR(255) NOT NULL ,
+    user_id INT(11) NOT NULL ,
+    created_at datetime default current_timestamp,
+    PRIMARY KEY (id))`, tableNameSession)
+
+	_, err = Db.Exec(cmdS)
 	if err != nil {
 		log.Fatalln(err)
 	}
