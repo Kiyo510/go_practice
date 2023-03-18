@@ -2,21 +2,17 @@ package main
 
 import "fmt"
 
-type Number interface {
-	~int | int32 | ~int64 | ~float32 | ~float64
-}
+type Set[T comparable] map[T]struct{}
 
-type MyInt int
-
-func Max[T Number](x, y T) T {
-	if x >= y {
-		return x
+func NewSet[T comparable](xs ...T) Set[T] {
+	s := make(Set[T])
+	for _, v := range xs {
+		s[v] = struct{}{}
 	}
-	return y
+	return s
 }
 
 func main() {
-	var x, y MyInt = 1, 2
-	fmt.Println(Max(x, y))
-	fmt.Println(Max(1.2201, 1.220))
+	r := NewSet(2, 3, 4, 5, 6)
+	fmt.Println(r)
 }
